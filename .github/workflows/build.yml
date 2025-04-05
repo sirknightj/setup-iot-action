@@ -32,6 +32,13 @@ jobs:
         run: |
           npm run build
 
+      - name: Run the custom AWS IoT action
+        uses: ./
+        with:
+          thing-name: "my-test-thing"
+        env:
+          AWS_DEFAULT_REGION: "us-west-2"
+
       - name: Configure git
         run: |
           git config user.name "github-actions"
