@@ -1,3 +1,5 @@
+import {createThing} from "./setup";
+
 const core = require('@actions/core');
 
 async function main() {
