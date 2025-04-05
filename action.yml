@@ -7,5 +7,5 @@ inputs:
 
 runs:
   using: "node20"
-  main: "dist/main.js"
-  post: "dist/cleanup.js"
+  main: "dist/setup/index.js"
+  post: "dist/cleanup/index.js"
