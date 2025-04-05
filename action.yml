@@ -1,0 +1,11 @@
+name: "Setup AWS IoT Action"
+description: "Sets up AWS IoT Thing, Role, Policy, Keys, etc., and handles cleanup automatically"
+inputs:
+  thing-name:
+    required: true
+    description: "IoT Thing Name"
+
+runs:
+  using: "node20"
+  main: "dist/main.js"
+  post: "dist/cleanup.js"

@@ -1,0 +1,35 @@
+name: Build and Commit dist/ Files
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    if: ${{ github.actor != 'github-actions' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Build dist files
+        run: |
+          npm run build
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Commit dist files
+        run: |
+          git add dist/
+          git commit -m "Update dist files"
+          git push origin HEAD:${{ github.head_ref }}

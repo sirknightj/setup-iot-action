@@ -1,0 +1,17 @@
+{
+  "name": "setup-iot-action",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "ncc build src/index.js -o dist && ncc build src/cleanup.js -o dist"
+  },
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.0.0",
+    "@aws-sdk/client-iam": "^3.782.0",
+    "@aws-sdk/client-iot": "^3.782.0"
+  },
+  "devDependencies": {
+    "ncc": "^0.3.6"
+  }
+}
