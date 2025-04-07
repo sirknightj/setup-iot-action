@@ -1,8 +1,8 @@
-import core from "@actions/core";
+import {getInput} from "@actions/core";
 
 export function getInputs() {
-    const iotThingName = core.getInput('thing-name');
-    const iamRoleName = core.getInput('iam-role-name');
+    const iotThingName = getInput('thing-name');
+    const iamRoleName = getInput('iam-role-name');
 
     if (!iotThingName.length) {
         throw `Required parameter not supplied: thing-name`;
@@ -12,5 +12,5 @@ export function getInputs() {
         throw `Required parameter not supplied: thing-name`;
     }
 
-    return { iotThingName, iamRoleName };
+    return {iotThingName, iamRoleName};
 }
