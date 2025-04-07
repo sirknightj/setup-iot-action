@@ -36,7 +36,11 @@ export async function deleteThing(thingName) {
 
         logInfo(`Deleted thing: ${thingName}`);
     } catch (error) {
-        logError('Unable to DeleteThing', error);
-        throw error;
+        if (error.name !== 'ResourceNotFoundException') {
+            logError('Unable to DeleteThing', error);
+            throw error;
+        }
+
+        logInfo(`✅ Thing doesn't exist: ${thingName}`)
     }
 }

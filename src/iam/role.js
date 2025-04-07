@@ -14,7 +14,7 @@ export async function createRole(roleName) {
         logInfo(`IAM role "${roleName}" already exists. ARN: ${response.Role.Arn}`);
         return response.Role.Arn;
     } catch (error) {
-        if (error.name !== 'NoSuchEntity') {
+        if (error.name !== 'NoSuchEntityException') {
             logError('Unable to GetRole', error);
             throw error;
         }
@@ -58,7 +58,11 @@ export async function deleteRole(roleName) {
 
         logInfo(`Deleted IAM role: ${roleName}`);
     } catch (error) {
-        logError('Unable to DeleteRole', error);
-        throw error;
+        if (error.name !== 'NoSuchEntityException') {
+            logError('Unable to GetRole', error);
+            throw error;
+        }
+
+        logInfo(`✅ Role doesn't exist: ${roleName}`)
     }
 }
