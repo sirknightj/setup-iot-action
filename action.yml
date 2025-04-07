@@ -17,6 +17,18 @@ inputs:
     required: true
     description: "IAM permissions policy"
 
+  iot-role-alias:
+    required: true
+    description: "Alias name to associate with the IAM role for AWS IoT credentials"
+
+  credential-duration-seconds:
+    required: false
+    default: "3600"
+    description: |
+      Duration in seconds for which credentials are valid (default: 3600).
+      Must be less than or equal to the maximum session duration of the IAM role that the role alias references.
+      Minimum: 900. Maximum: 43200
+
 runs:
   using: "node20"
   main: "dist/setup/index.js"

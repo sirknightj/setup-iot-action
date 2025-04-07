@@ -101,6 +101,7 @@ jobs:
               ]
             }
 
+          iot-role-alias: 'my-test-role-alias'
   commit:
     name: Commit and push dist/
     runs-on: ubuntu-latest

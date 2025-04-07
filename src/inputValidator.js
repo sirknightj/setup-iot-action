@@ -5,6 +5,8 @@ export function getInputs() {
     const iamRoleName = getInput('iam-role-name');
     const iamPolicyName = getInput('iam-policy-name');
     const permissionsPolicyRaw = getInput('iam-policy-string');
+    const roleAliasName = getInput("iot-role-alias");
+    const credentialDurationSecondsRaw = getInput("credential-duration-seconds");
 
     if (!iotThingName.length) {
         throw `Required parameter not supplied: thing-name`;
@@ -22,6 +24,20 @@ export function getInputs() {
         throw new Error(`Required parameter not supplied: iam-policy-string`);
     }
 
+    if (!roleAliasName.length) {
+        throw new Error(`Required parameter not supplied: iot-role-alias`);
+    }
+
+    if (typeof credentialDurationSecondsRaw !== 'string' || !/^\d+$/.test(credentialDurationSecondsRaw)) {
+        throw new Error(`credential-duration-seconds must be an integer`);
+    }
+
+    const credentialDurationSeconds = parseInt(credentialDurationSecondsRaw, 10);
+
+    if (credentialDurationSeconds < 900 || credentialDurationSeconds > 43200) {
+        throw new Error(`credential-duration-seconds must be between 900 and 43,200`);
+    }
+
     let permissionsPolicy;
     try {
         permissionsPolicy = JSON.parse(permissionsPolicyRaw);
@@ -33,5 +49,5 @@ export function getInputs() {
         throw new Error(`permissions-policy must be a valid JSON object`);
     }
 
-    return {iotThingName, iamRoleName, iamPolicyName, permissionsPolicy};
+    return {iotThingName, iamRoleName, iamPolicyName, permissionsPolicy, roleAliasName, credentialDurationSeconds};
 }
