@@ -81,6 +81,7 @@ jobs:
         uses: ./
         with:
           thing-name: "my-test-thing"
+          iam-role-name: 'my-test-role'
         env:
           AWS_DEFAULT_REGION: "us-west-2"
 
