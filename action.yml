@@ -9,6 +9,14 @@ inputs:
     required: true
     description: "Name of IAM role"
 
+  iam-policy-name:
+    required: true
+    description: "Name of IAM policy that gets attached to IAM role"
+
+  iam-policy-string:
+    required: true
+    description: "IAM permissions policy"
+
 runs:
   using: "node20"
   main: "dist/setup/index.js"

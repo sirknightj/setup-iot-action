@@ -82,8 +82,24 @@ jobs:
         with:
           thing-name: "my-test-thing"
           iam-role-name: 'my-test-role'
-        env:
-          AWS_DEFAULT_REGION: "us-west-2"
+          iam-policy-name: 'my-test-policy'
+          iam-policy-string: |
+            {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "kinesisvideo:CreateSignalingChannel",
+                    "kinesisvideo:DescribeSignalingChannel",
+                    "kinesisvideo:GetSignalingChannelEndpoint",
+                    "kinesisvideo:ConnectAsMaster",
+                    "kinesisvideo:GetIceServerConfig"
+                  ],
+                  "Resource": "arn:aws:kinesisvideo:*:*:channel/${credentials-iot:ThingName}/*"
+                }
+              ]
+            }
 
   commit:
     name: Commit and push dist/
