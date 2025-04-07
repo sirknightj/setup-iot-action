@@ -98,7 +98,7 @@ export async function createRole(roleName) {
 
         getRoleResponse = await iamClient.send(createCommand);
 
-        logInfo(`Created IAM role: ${response.Role.Arn}`);
+        logInfo(`Created IAM role: ${getRoleResponse.Role.Arn}`);
     } catch (error) {
         logError('Unable to CreateRole', error);
         throw error;
