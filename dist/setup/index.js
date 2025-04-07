@@ -62437,7 +62437,7 @@ const removeSensitiveInfo = function(maybeSensitive) {
 const iotClient = new dist_cjs.IoTClient();
 
 async function createThing(thingName) {
-    logInfo(`Using region ${iotClient.config.region}`);
+    logInfo(`Using region ${await iotClient.config.region()}`);
     logInfo(`Checking if thing exists: ${thingName}`);
 
     try {
@@ -62445,7 +62445,7 @@ async function createThing(thingName) {
         const response = await iotClient.send(describeCommand);
 
         logInfo(`Thing "${thingName}" already exists. ARN: ${response.thingArn}`);
-        return response.thingName;
+        return response.thingArn;
     } catch (error) {
         if (error.name !== 'ResourceNotFoundException') {
             logError('Unable to DescribeThing', error);
@@ -62457,8 +62457,8 @@ async function createThing(thingName) {
         const createThingCommand = new dist_cjs.CreateThingCommand({thingName});
         const response = await iotClient.send(createThingCommand);
 
-        logInfo(`Created thing: ${response.thingName}`);
-        return response.thingName;
+        logInfo(`Created thing: ${response.thingArn}`);
+        return response.thingArn;
     }
 }
 
