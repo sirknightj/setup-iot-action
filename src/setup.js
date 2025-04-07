@@ -1,12 +1,30 @@
-import { IoTClient, CreateThingCommand } from '@aws-sdk/client-iot';
-import * as fs from 'fs/promises';
-import * as path from 'path';
+import {IoTClient, CreateThingCommand, DescribeThingCommand} from '@aws-sdk/client-iot';
+import {logError, logInfo} from "./helpers";
 
-const iot = new IoTClient({ region: process.env.AWS_DEFAULT_REGION });
+const iotClient = new IoTClient();
 
 export async function createThing(thingName) {
-    console.log(`Creating thing: ${thingName}`);
-    // const command = new CreateThingCommand({ thingName });
-    // const response = await iot.send(command);
-    // return response.thingName;
+    logInfo(`Using region ${iotClient.config.region}`);
+    logInfo(`Checking if thing exists: ${thingName}`);
+
+    try {
+        const describeCommand = new DescribeThingCommand({thingName});
+        const response = await iotClient.send(describeCommand);
+
+        logInfo(`Thing "${thingName}" already exists. ARN: ${response.thingArn}`);
+        return response.thingName;
+    } catch (error) {
+        if (error.name !== 'ResourceNotFoundException') {
+            logError('Unable to DescribeThing', error);
+            throw error;
+        }
+
+        logInfo(`Thing "${thingName}" not found. Creating it...`);
+
+        const createThingCommand = new CreateThingCommand({thingName});
+        const response = await iotClient.send(createThingCommand);
+
+        logInfo(`Created thing: ${response.thingName}`);
+        return response.thingName;
+    }
 }
