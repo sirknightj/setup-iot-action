@@ -74308,6 +74308,60 @@ const removeSensitiveInfo = function(maybeSensitive) {
 
 /***/ }),
 
+/***/ 9168:
+/***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
+
+"use strict";
+__nccwpck_require__.r(__webpack_exports__);
+/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
+/* harmony export */   deleteRolePolicy: () => (/* binding */ deleteRolePolicy),
+/* harmony export */   putRolePolicy: () => (/* binding */ putRolePolicy)
+/* harmony export */ });
+/* harmony import */ var _aws_sdk_client_iam__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(9235);
+/* harmony import */ var _aws_sdk_client_iam__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_aws_sdk_client_iam__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _helpers_js__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(6255);
+
+
+
+const iamClient = new _aws_sdk_client_iam__WEBPACK_IMPORTED_MODULE_1__.IAMClient();
+
+async function putRolePolicy(roleName, policyName, permissionsPolicy) {
+    try {
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Attaching inline policy "${policyName}" to role "${roleName}"...`);
+        const command = new _aws_sdk_client_iam__WEBPACK_IMPORTED_MODULE_1__.PutRolePolicyCommand({
+            RoleName: roleName,
+            PolicyName: policyName,
+            PolicyDocument: JSON.stringify(permissionsPolicy),
+        });
+        await iamClient.send(command);
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Attached policy "${policyName}" to role "${roleName}"`);
+    } catch (error) {
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logError */ .vV)('Unable to PutRolePolicy', error);
+        throw error;
+    }
+}
+
+async function deleteRolePolicy(roleName, policyName) {
+    try {
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Detaching inline policy "${policyName}" from role "${roleName}"...`);
+        const command = new _aws_sdk_client_iam__WEBPACK_IMPORTED_MODULE_1__.DeleteRolePolicyCommand({
+            RoleName: roleName,
+            PolicyName: policyName,
+        });
+        await iamClient.send(command);
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Detached policy "${policyName}" from role "${roleName}"`);
+    } catch (error) {
+        if (error.name !== 'NoSuchEntityException') {
+            (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logError */ .vV)('Unable to DeleteRolePolicy', error);
+            throw error;
+        }
+
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`✅ Inline policy "${policyName}" not found on role "${roleName}"`);
+    }
+}
+
+/***/ }),
+
 /***/ 2630:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
@@ -74407,16 +74461,37 @@ __nccwpck_require__.r(__webpack_exports__);
 function getInputs() {
     const iotThingName = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('thing-name');
     const iamRoleName = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('iam-role-name');
+    const iamPolicyName = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('iam-policy-name');
+    const permissionsPolicyRaw = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('iam-policy-string');
 
     if (!iotThingName.length) {
         throw `Required parameter not supplied: thing-name`;
     }
 
     if (!iamRoleName.length) {
-        throw `Required parameter not supplied: thing-name`;
+        throw `Required parameter not supplied: iam-role-name`;
     }
 
-    return {iotThingName, iamRoleName};
+    if (!iamPolicyName.length) {
+        throw `Required parameter not supplied: iam-policy-name`;
+    }
+
+    if (!permissionsPolicyRaw.length) {
+        throw new Error(`Required parameter not supplied: iam-policy-string`);
+    }
+
+    let permissionsPolicy;
+    try {
+        permissionsPolicy = JSON.parse(permissionsPolicyRaw);
+
+        if (typeof permissionsPolicy !== 'object' || Array.isArray(permissionsPolicy) || permissionsPolicy === null) {
+            throw new Error();
+        }
+    } catch {
+        throw new Error(`permissions-policy must be a valid JSON object`);
+    }
+
+    return {iotThingName, iamRoleName, iamPolicyName, permissionsPolicy};
 }
 
 
@@ -76488,10 +76563,12 @@ const core = __nccwpck_require__(8167);
 const {deleteRole} = __nccwpck_require__(2630);
 const {deleteThing} = __nccwpck_require__(5349);
 const {getInputs} = __nccwpck_require__(7626);
+const {deleteRolePolicy} = __nccwpck_require__(9168);
 
 async function main() {
-    const { iotThingName, iamRoleName } = getInputs();
+    const { iotThingName, iamRoleName, iamPolicyName } = getInputs();
 
+    await deleteRolePolicy(iamRoleName, iamPolicyName);
     await deleteRole(iamRoleName);
     await deleteThing(iotThingName);
 }

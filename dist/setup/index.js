@@ -76391,28 +76391,91 @@ var lib_core = __nccwpck_require__(8167);
 function getInputs() {
     const iotThingName = (0,lib_core.getInput)('thing-name');
     const iamRoleName = (0,lib_core.getInput)('iam-role-name');
+    const iamPolicyName = (0,lib_core.getInput)('iam-policy-name');
+    const permissionsPolicyRaw = (0,lib_core.getInput)('iam-policy-string');
 
     if (!iotThingName.length) {
         throw `Required parameter not supplied: thing-name`;
     }
 
     if (!iamRoleName.length) {
-        throw `Required parameter not supplied: thing-name`;
+        throw `Required parameter not supplied: iam-role-name`;
     }
 
-    return {iotThingName, iamRoleName};
+    if (!iamPolicyName.length) {
+        throw `Required parameter not supplied: iam-policy-name`;
+    }
+
+    if (!permissionsPolicyRaw.length) {
+        throw new Error(`Required parameter not supplied: iam-policy-string`);
+    }
+
+    let permissionsPolicy;
+    try {
+        permissionsPolicy = JSON.parse(permissionsPolicyRaw);
+
+        if (typeof permissionsPolicy !== 'object' || Array.isArray(permissionsPolicy) || permissionsPolicy === null) {
+            throw new Error();
+        }
+    } catch {
+        throw new Error(`permissions-policy must be a valid JSON object`);
+    }
+
+    return {iotThingName, iamRoleName, iamPolicyName, permissionsPolicy};
 }
 
+;// CONCATENATED MODULE: ./src/iam/policy.js
+
+
+
+const policy_iamClient = new client_iam_dist_cjs.IAMClient();
+
+async function putRolePolicy(roleName, policyName, permissionsPolicy) {
+    try {
+        helpers_logInfo(`Attaching inline policy "${policyName}" to role "${roleName}"...`);
+        const command = new client_iam_dist_cjs.PutRolePolicyCommand({
+            RoleName: roleName,
+            PolicyName: policyName,
+            PolicyDocument: JSON.stringify(permissionsPolicy),
+        });
+        await policy_iamClient.send(command);
+        helpers_logInfo(`Attached policy "${policyName}" to role "${roleName}"`);
+    } catch (error) {
+        helpers_logError('Unable to PutRolePolicy', error);
+        throw error;
+    }
+}
+
+async function deleteRolePolicy(roleName, policyName) {
+    try {
+        logInfo(`Detaching inline policy "${policyName}" from role "${roleName}"...`);
+        const command = new DeleteRolePolicyCommand({
+            RoleName: roleName,
+            PolicyName: policyName,
+        });
+        await policy_iamClient.send(command);
+        logInfo(`Detached policy "${policyName}" from role "${roleName}"`);
+    } catch (error) {
+        if (error.name !== 'NoSuchEntityException') {
+            logError('Unable to DeleteRolePolicy', error);
+            throw error;
+        }
+
+        logInfo(`✅ Inline policy "${policyName}" not found on role "${roleName}"`);
+    }
+}
 ;// CONCATENATED MODULE: ./src/index.js
 
 
 
 
+
 async function main() {
-    const { iotThingName, iamRoleName } = getInputs();
+    const { iotThingName, iamRoleName, iamPolicyName, permissionsPolicy } = getInputs();
 
     await createThing(iotThingName);
     await createRole(iamRoleName);
+    await putRolePolicy(iamRoleName, iamPolicyName, permissionsPolicy);
 }
 
 main();
