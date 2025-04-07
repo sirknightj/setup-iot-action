@@ -62401,33 +62401,76 @@ var __webpack_exports__ = {};
 
 // EXTERNAL MODULE: ./node_modules/@aws-sdk/client-iot/dist-cjs/index.js
 var dist_cjs = __nccwpck_require__(192);
-// EXTERNAL MODULE: external "fs/promises"
-var promises_ = __nccwpck_require__(1943);
-// EXTERNAL MODULE: external "path"
-var external_path_ = __nccwpck_require__(6928);
+;// CONCATENATED MODULE: ./src/helpers.js
+const core = __nccwpck_require__(8167);
+
+/**
+ * Logs the message as INFO level.
+ * @param {...any} args - Whatever you would normally pass into console.log().
+ */
+const logInfo = function (...args) {
+    const logLine = args.map(arg => removeSensitiveInfo(arg)).join(' ');
+    core.info(logLine);
+}
+
+/**
+ * Logs the message as INFO level.
+ * @param {...any} args - Whatever you would normally pass into console.log().
+ */
+const logError = function (...args) {
+    const logLine = args.map(arg => removeSensitiveInfo(arg)).join(' ');
+    core.error(logLine);
+}
+
+/**
+ * Remove sensitive info from a string.
+ * @param maybeSensitive {string} a string that might contain sensitive info.
+ * @returns {string} the same string, but with sensitive info replaced with `*`'s.
+ */
+const removeSensitiveInfo = function(maybeSensitive) {
+    return maybeSensitive;
+}
 ;// CONCATENATED MODULE: ./src/setup.js
 
 
 
-
-const iot = new dist_cjs.IoTClient({ region: process.env.AWS_DEFAULT_REGION });
+const iotClient = new dist_cjs.IoTClient();
 
 async function createThing(thingName) {
-    console.log(`Creating thing: ${thingName}`);
-    // const command = new CreateThingCommand({ thingName });
-    // const response = await iot.send(command);
-    // return response.thingName;
+    logInfo(`Using region ${iotClient.config.region}`);
+    logInfo(`Checking if thing exists: ${thingName}`);
+
+    try {
+        const describeCommand = new dist_cjs.DescribeThingCommand({thingName});
+        const response = await iotClient.send(describeCommand);
+
+        logInfo(`Thing "${thingName}" already exists. ARN: ${response.thingArn}`);
+        return response.thingName;
+    } catch (error) {
+        if (error.name !== 'ResourceNotFoundException') {
+            logError('Unable to DescribeThing', error);
+            throw error;
+        }
+
+        logInfo(`Thing "${thingName}" not found. Creating it...`);
+
+        const createThingCommand = new dist_cjs.CreateThingCommand({thingName});
+        const response = await iotClient.send(createThingCommand);
+
+        logInfo(`Created thing: ${response.thingName}`);
+        return response.thingName;
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/index.js
 
 
-const core = __nccwpck_require__(8167);
+const src_core = __nccwpck_require__(8167);
 
 async function main() {
-    const thingName = core.getInput('thing-name');
+    const thingName = src_core.getInput('thing-name');
 
-    createThing(thingName);
+    await createThing(thingName);
 }
 
 main();
