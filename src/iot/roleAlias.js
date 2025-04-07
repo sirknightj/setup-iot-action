@@ -8,7 +8,7 @@ export async function createRoleAlias(roleAlias, roleArn, credentialDurationSeco
         logInfo(`Creating role alias "${roleAlias}" with role ARN: ${roleArn}`);
 
         const command = new CreateRoleAliasCommand({
-            roleAliasName: roleAlias,
+            roleAlias,
             roleArn,
             credentialDurationSeconds: credentialDurationSeconds,
         });
@@ -27,7 +27,7 @@ export async function createRoleAlias(roleAlias, roleArn, credentialDurationSeco
 
 export async function deleteRoleAlias(roleAlias) {
     try {
-        const command = new DeleteRoleAliasCommand({ roleAliasName: roleAlias });
+        const command = new DeleteRoleAliasCommand({ roleAlias });
         await iotClient.send(command);
 
         logInfo(`✅ Deleted role alias: ${roleAlias}`);
