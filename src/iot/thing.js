@@ -1,5 +1,5 @@
-import {IoTClient, CreateThingCommand, DescribeThingCommand} from '@aws-sdk/client-iot';
-import {logError, logInfo} from "./helpers";
+import {logError, logInfo} from "../helpers";
+import {CreateThingCommand, DeleteThingCommand, DescribeThingCommand, IoTClient} from "@aws-sdk/client-iot";
 
 const iotClient = new IoTClient();
 
@@ -26,5 +26,17 @@ export async function createThing(thingName) {
 
         logInfo(`Created thing: ${response.thingArn}`);
         return response.thingArn;
+    }
+}
+
+export async function deleteThing(thingName) {
+    try {
+        const deleteThingCommand = new DeleteThingCommand({thingName});
+        await iotClient.send(deleteThingCommand);
+
+        logInfo(`Deleted thing: ${thingName}`);
+    } catch (error) {
+        logError('Unable to DeleteThing', error);
+        throw error;
     }
 }

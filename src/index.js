@@ -1,11 +1,14 @@
-import {createThing} from "./setup";
+import {createThing} from "./iot/thing";
+import {createRole} from "./iam/role";
 
 const core = require('@actions/core');
 
 async function main() {
-    const thingName = core.getInput('thing-name');
+    const iotThingName = core.getInput('thing-name');
+    const iamRoleName = core.getInput('iam-role-name');
 
-    await createThing(thingName);
+    await createThing(iotThingName);
+    await createRole(iamRoleName);
 }
 
 main();

@@ -1,10 +1,13 @@
 const core = require('@actions/core');
-const {deleteThing} = require("./thing");
+const {deleteRole} = require("./iam/role");
+const {deleteThing} = require("./iot/thing");
 
 async function main() {
-    const thingName = core.getInput('thing-name');
+    const iotThingName = core.getInput('thing-name');
+    const iamRoleName = core.getInput('iam-role-name');
 
-    await deleteThing(thingName);
+    await deleteRole(iamRoleName);
+    await deleteThing(iotThingName);
 }
 
 main();

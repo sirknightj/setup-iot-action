@@ -5,6 +5,10 @@ inputs:
     required: true
     description: "IoT Thing Name"
 
+  iam-role-name:
+    required: true
+    description: "Name of IAM role"
+
 runs:
   using: "node20"
   main: "dist/setup/index.js"
