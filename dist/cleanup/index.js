@@ -34693,13 +34693,13 @@ var resolveCredentialSource = /* @__PURE__ */ __name((credentialSource, profileN
   const sourceProvidersMap = {
     EcsContainer: /* @__PURE__ */ __name(async (options) => {
       const { fromHttp } = await Promise.resolve().then(() => __toESM(__nccwpck_require__(3298)));
-      const { fromContainerMetadata } = await Promise.resolve().then(() => __toESM(__nccwpck_require__(896)));
+      const { fromContainerMetadata } = await Promise.resolve().then(() => __toESM(__nccwpck_require__(8515)));
       logger?.debug("@aws-sdk/credential-provider-ini - credential_source is EcsContainer");
       return async () => (0, import_property_provider.chain)(fromHttp(options ?? {}), fromContainerMetadata(options))().then(setNamedProvider);
     }, "EcsContainer"),
     Ec2InstanceMetadata: /* @__PURE__ */ __name(async (options) => {
       logger?.debug("@aws-sdk/credential-provider-ini - credential_source is Ec2InstanceMetadata");
-      const { fromInstanceMetadata } = await Promise.resolve().then(() => __toESM(__nccwpck_require__(896)));
+      const { fromInstanceMetadata } = await Promise.resolve().then(() => __toESM(__nccwpck_require__(8515)));
       return async () => fromInstanceMetadata(options)().then(setNamedProvider);
     }, "Ec2InstanceMetadata"),
     Environment: /* @__PURE__ */ __name(async (options) => {
@@ -34968,7 +34968,7 @@ var import_shared_ini_file_loader = __nccwpck_require__(165);
 var import_property_provider = __nccwpck_require__(2321);
 var ENV_IMDS_DISABLED = "AWS_EC2_METADATA_DISABLED";
 var remoteProvider = /* @__PURE__ */ __name(async (init) => {
-  const { ENV_CMDS_FULL_URI, ENV_CMDS_RELATIVE_URI, fromContainerMetadata, fromInstanceMetadata } = await Promise.resolve().then(() => __toESM(__nccwpck_require__(896)));
+  const { ENV_CMDS_FULL_URI, ENV_CMDS_RELATIVE_URI, fromContainerMetadata, fromInstanceMetadata } = await Promise.resolve().then(() => __toESM(__nccwpck_require__(8515)));
   if (process.env[ENV_CMDS_RELATIVE_URI] || process.env[ENV_CMDS_FULL_URI]) {
     init.logger?.debug("@aws-sdk/credential-provider-node - remoteProvider::fromHttp/fromContainerMetadata");
     const { fromHttp } = await Promise.resolve().then(() => __toESM(__nccwpck_require__(3298)));
@@ -40095,7 +40095,7 @@ var RequestBuilder = class {
 
 /***/ }),
 
-/***/ 896:
+/***/ 8515:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 var __defProp = Object.defineProperty;
@@ -46428,7 +46428,7 @@ var inferPhysicalRegion = /* @__PURE__ */ __name(async () => {
   }
   if (!process.env[ENV_IMDS_DISABLED]) {
     try {
-      const { getInstanceMetadataEndpoint, httpRequest } = await Promise.resolve().then(() => __toESM(__nccwpck_require__(896)));
+      const { getInstanceMetadataEndpoint, httpRequest } = await Promise.resolve().then(() => __toESM(__nccwpck_require__(8515)));
       const endpoint = await getInstanceMetadataEndpoint();
       return (await httpRequest({ ...endpoint, path: IMDS_REGION_PATH })).toString();
     } catch (e) {
@@ -47639,7 +47639,7 @@ exports.createChecksumStream = createChecksumStream;
 
 /***/ }),
 
-/***/ 7779:
+/***/ 160:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -48041,7 +48041,7 @@ var Uint8ArrayBlobAdapter = class _Uint8ArrayBlobAdapter extends Uint8Array {
 // src/index.ts
 __reExport(src_exports, __nccwpck_require__(8896), module.exports);
 __reExport(src_exports, __nccwpck_require__(4436), module.exports);
-__reExport(src_exports, __nccwpck_require__(7779), module.exports);
+__reExport(src_exports, __nccwpck_require__(160), module.exports);
 __reExport(src_exports, __nccwpck_require__(5837), module.exports);
 __reExport(src_exports, __nccwpck_require__(9489), module.exports);
 __reExport(src_exports, __nccwpck_require__(3124), module.exports);
@@ -51431,7 +51431,7 @@ const errors = __nccwpck_require__(644)
 const Pool = __nccwpck_require__(633)
 const BalancedPool = __nccwpck_require__(7838)
 const Agent = __nccwpck_require__(5866)
-const util = __nccwpck_require__(8515)
+const util = __nccwpck_require__(896)
 const { InvalidArgumentError } = errors
 const api = __nccwpck_require__(5272)
 const buildConnector = __nccwpck_require__(7657)
@@ -51605,7 +51605,7 @@ const { kClients, kRunning, kClose, kDestroy, kDispatch, kInterceptors } = __ncc
 const DispatcherBase = __nccwpck_require__(166)
 const Pool = __nccwpck_require__(633)
 const Client = __nccwpck_require__(4148)
-const util = __nccwpck_require__(8515)
+const util = __nccwpck_require__(896)
 const createRedirectInterceptor = __nccwpck_require__(140)
 const { WeakRef, FinalizationRegistry } = __nccwpck_require__(5245)()
 
@@ -51753,7 +51753,7 @@ module.exports = Agent
 /***/ 1343:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-const { addAbortListener } = __nccwpck_require__(8515)
+const { addAbortListener } = __nccwpck_require__(896)
 const { RequestAbortedError } = __nccwpck_require__(644)
 
 const kListener = Symbol('kListener')
@@ -51819,7 +51819,7 @@ module.exports = {
 
 const { AsyncResource } = __nccwpck_require__(290)
 const { InvalidArgumentError, RequestAbortedError, SocketError } = __nccwpck_require__(644)
-const util = __nccwpck_require__(8515)
+const util = __nccwpck_require__(896)
 const { addSignal, removeSignal } = __nccwpck_require__(1343)
 
 class ConnectHandler extends AsyncResource {
@@ -51939,7 +51939,7 @@ const {
   InvalidReturnValueError,
   RequestAbortedError
 } = __nccwpck_require__(644)
-const util = __nccwpck_require__(8515)
+const util = __nccwpck_require__(896)
 const { AsyncResource } = __nccwpck_require__(290)
 const { addSignal, removeSignal } = __nccwpck_require__(1343)
 const assert = __nccwpck_require__(2613)
@@ -52180,7 +52180,7 @@ module.exports = pipeline
 
 /***/ }),
 
-/***/ 160:
+/***/ 7779:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
@@ -52191,7 +52191,7 @@ const {
   InvalidArgumentError,
   RequestAbortedError
 } = __nccwpck_require__(644)
-const util = __nccwpck_require__(8515)
+const util = __nccwpck_require__(896)
 const { getResolveErrorBodyCallback } = __nccwpck_require__(6850)
 const { AsyncResource } = __nccwpck_require__(290)
 const { addSignal, removeSignal } = __nccwpck_require__(1343)
@@ -52380,7 +52380,7 @@ const {
   InvalidReturnValueError,
   RequestAbortedError
 } = __nccwpck_require__(644)
-const util = __nccwpck_require__(8515)
+const util = __nccwpck_require__(896)
 const { getResolveErrorBodyCallback } = __nccwpck_require__(6850)
 const { AsyncResource } = __nccwpck_require__(290)
 const { addSignal, removeSignal } = __nccwpck_require__(1343)
@@ -52604,7 +52604,7 @@ module.exports = stream
 
 const { InvalidArgumentError, RequestAbortedError, SocketError } = __nccwpck_require__(644)
 const { AsyncResource } = __nccwpck_require__(290)
-const util = __nccwpck_require__(8515)
+const util = __nccwpck_require__(896)
 const { addSignal, removeSignal } = __nccwpck_require__(1343)
 const assert = __nccwpck_require__(2613)
 
@@ -52715,7 +52715,7 @@ module.exports = upgrade
 "use strict";
 
 
-module.exports.request = __nccwpck_require__(160)
+module.exports.request = __nccwpck_require__(7779)
 module.exports.stream = __nccwpck_require__(2289)
 module.exports.pipeline = __nccwpck_require__(6439)
 module.exports.upgrade = __nccwpck_require__(4097)
@@ -52735,8 +52735,8 @@ module.exports.connect = __nccwpck_require__(1987)
 const assert = __nccwpck_require__(2613)
 const { Readable } = __nccwpck_require__(2203)
 const { RequestAbortedError, NotSupportedError, InvalidArgumentError } = __nccwpck_require__(644)
-const util = __nccwpck_require__(8515)
-const { ReadableStreamFrom, toUSVString } = __nccwpck_require__(8515)
+const util = __nccwpck_require__(896)
+const { ReadableStreamFrom, toUSVString } = __nccwpck_require__(896)
 
 let Blob
 
@@ -53061,7 +53061,7 @@ const assert = __nccwpck_require__(2613)
 const {
   ResponseStatusCodeError
 } = __nccwpck_require__(644)
-const { toUSVString } = __nccwpck_require__(8515)
+const { toUSVString } = __nccwpck_require__(896)
 
 async function getResolveErrorBodyCallback ({ callback, body, contentType, statusCode, statusMessage, headers }) {
   assert(body)
@@ -53127,7 +53127,7 @@ const {
 } = __nccwpck_require__(2419)
 const Pool = __nccwpck_require__(633)
 const { kUrl, kInterceptors } = __nccwpck_require__(8974)
-const { parseOrigin } = __nccwpck_require__(8515)
+const { parseOrigin } = __nccwpck_require__(896)
 const kFactory = Symbol('factory')
 
 const kOptions = Symbol('options')
@@ -53313,7 +53313,7 @@ module.exports = BalancedPool
 
 const { kConstruct } = __nccwpck_require__(5691)
 const { urlEquals, fieldValues: getFieldValues } = __nccwpck_require__(6224)
-const { kEnumerableProperty, isDisturbed } = __nccwpck_require__(8515)
+const { kEnumerableProperty, isDisturbed } = __nccwpck_require__(896)
 const { kHeadersList } = __nccwpck_require__(8974)
 const { webidl } = __nccwpck_require__(5631)
 const { Response, cloneResponse } = __nccwpck_require__(7169)
@@ -54160,7 +54160,7 @@ module.exports = {
 const { kConstruct } = __nccwpck_require__(5691)
 const { Cache } = __nccwpck_require__(8208)
 const { webidl } = __nccwpck_require__(5631)
-const { kEnumerableProperty } = __nccwpck_require__(8515)
+const { kEnumerableProperty } = __nccwpck_require__(896)
 
 class CacheStorage {
   /**
@@ -54387,7 +54387,7 @@ const assert = __nccwpck_require__(2613)
 const net = __nccwpck_require__(9278)
 const http = __nccwpck_require__(8611)
 const { pipeline } = __nccwpck_require__(2203)
-const util = __nccwpck_require__(8515)
+const util = __nccwpck_require__(896)
 const timers = __nccwpck_require__(5185)
 const Request = __nccwpck_require__(1018)
 const DispatcherBase = __nccwpck_require__(166)
@@ -57546,7 +57546,7 @@ module.exports = {
 
 const net = __nccwpck_require__(9278)
 const assert = __nccwpck_require__(2613)
-const util = __nccwpck_require__(8515)
+const util = __nccwpck_require__(896)
 const { InvalidArgumentError, ConnectTimeoutError } = __nccwpck_require__(644)
 
 let tls // include tls conditionally since it is not always available
@@ -58111,7 +58111,7 @@ const {
 } = __nccwpck_require__(644)
 const assert = __nccwpck_require__(2613)
 const { kHTTP2BuildRequest, kHTTP2CopyHeaders, kHTTP1BuildRequest } = __nccwpck_require__(8974)
-const util = __nccwpck_require__(8515)
+const util = __nccwpck_require__(896)
 
 // tokenRegExp and headerCharRegex have been lifted from
 // https://github.com/nodejs/node/blob/main/lib/_http_common.js
@@ -58676,7 +58676,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 8515:
+/***/ 896:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
@@ -59440,7 +59440,7 @@ module.exports = Dispatcher
 
 
 const Busboy = __nccwpck_require__(2868)
-const util = __nccwpck_require__(8515)
+const util = __nccwpck_require__(896)
 const {
   ReadableStreamFrom,
   isBlobLike,
@@ -59456,7 +59456,7 @@ const { DOMException, structuredClone } = __nccwpck_require__(3917)
 const { Blob, File: NativeFile } = __nccwpck_require__(181)
 const { kBodyUsed } = __nccwpck_require__(8974)
 const assert = __nccwpck_require__(2613)
-const { isErrored } = __nccwpck_require__(8515)
+const { isErrored } = __nccwpck_require__(896)
 const { isUint8Array, isArrayBuffer } = __nccwpck_require__(8253)
 const { File: UndiciFile } = __nccwpck_require__(264)
 const { parseMIMEType, serializeAMimeType } = __nccwpck_require__(8409)
@@ -60859,7 +60859,7 @@ const { kState } = __nccwpck_require__(1881)
 const { isBlobLike } = __nccwpck_require__(4226)
 const { webidl } = __nccwpck_require__(5631)
 const { parseMIMEType, serializeAMimeType } = __nccwpck_require__(8409)
-const { kEnumerableProperty } = __nccwpck_require__(8515)
+const { kEnumerableProperty } = __nccwpck_require__(896)
 const encoder = new TextEncoder()
 
 class File extends Blob {
@@ -61530,7 +61530,7 @@ module.exports = {
 
 const { kHeadersList, kConstruct } = __nccwpck_require__(8974)
 const { kGuard } = __nccwpck_require__(1881)
-const { kEnumerableProperty } = __nccwpck_require__(8515)
+const { kEnumerableProperty } = __nccwpck_require__(896)
 const {
   makeIterator,
   isValidHeaderName,
@@ -62183,7 +62183,7 @@ const {
 const { kHeadersList } = __nccwpck_require__(8974)
 const EE = __nccwpck_require__(4434)
 const { Readable, pipeline } = __nccwpck_require__(2203)
-const { addAbortListener, isErrored, isReadable, nodeMajor, nodeMinor } = __nccwpck_require__(8515)
+const { addAbortListener, isErrored, isReadable, nodeMajor, nodeMinor } = __nccwpck_require__(896)
 const { dataURLProcessor, serializeAMimeType } = __nccwpck_require__(8409)
 const { TransformStream } = __nccwpck_require__(3774)
 const { getGlobalDispatcher } = __nccwpck_require__(812)
@@ -64288,7 +64288,7 @@ module.exports = {
 const { extractBody, mixinBody, cloneBody } = __nccwpck_require__(3438)
 const { Headers, fill: fillHeaders, HeadersList } = __nccwpck_require__(1786)
 const { FinalizationRegistry } = __nccwpck_require__(5245)()
-const util = __nccwpck_require__(8515)
+const util = __nccwpck_require__(896)
 const {
   isValidHTTPToken,
   sameOrigin,
@@ -65239,7 +65239,7 @@ module.exports = { Request, makeRequest }
 
 const { Headers, HeadersList, fill } = __nccwpck_require__(1786)
 const { extractBody, cloneBody, mixinBody } = __nccwpck_require__(3438)
-const util = __nccwpck_require__(8515)
+const util = __nccwpck_require__(896)
 const { kEnumerableProperty } = util
 const {
   isValidReasonPhrase,
@@ -65837,7 +65837,7 @@ module.exports = {
 const { redirectStatusSet, referrerPolicySet: referrerPolicyTokens, badPortsSet } = __nccwpck_require__(3917)
 const { getGlobalOrigin } = __nccwpck_require__(6753)
 const { performance } = __nccwpck_require__(2987)
-const { isBlobLike, toUSVString, ReadableStreamFrom } = __nccwpck_require__(8515)
+const { isBlobLike, toUSVString, ReadableStreamFrom } = __nccwpck_require__(896)
 const assert = __nccwpck_require__(2613)
 const { isUint8Array } = __nccwpck_require__(8253)
 
@@ -67951,7 +67951,7 @@ const {
   kAborted
 } = __nccwpck_require__(6995)
 const { webidl } = __nccwpck_require__(5631)
-const { kEnumerableProperty } = __nccwpck_require__(8515)
+const { kEnumerableProperty } = __nccwpck_require__(896)
 
 class FileReader extends EventTarget {
   constructor () {
@@ -68877,7 +68877,7 @@ module.exports = class DecoratorHandler {
 "use strict";
 
 
-const util = __nccwpck_require__(8515)
+const util = __nccwpck_require__(896)
 const { kBodyUsed } = __nccwpck_require__(8974)
 const assert = __nccwpck_require__(2613)
 const { InvalidArgumentError } = __nccwpck_require__(644)
@@ -69107,7 +69107,7 @@ const assert = __nccwpck_require__(2613)
 
 const { kRetryHandlerDefaultRetry } = __nccwpck_require__(8974)
 const { RequestRetryError } = __nccwpck_require__(644)
-const { isDisturbed, parseHeaders, parseRangeHeader } = __nccwpck_require__(8515)
+const { isDisturbed, parseHeaders, parseRangeHeader } = __nccwpck_require__(896)
 
 function calculateRetryAfterHeader (retryAfter) {
   const current = Date.now()
@@ -70082,7 +70082,7 @@ const {
   kMockDispatch
 } = __nccwpck_require__(6142)
 const { InvalidArgumentError } = __nccwpck_require__(644)
-const { buildURL } = __nccwpck_require__(8515)
+const { buildURL } = __nccwpck_require__(896)
 
 /**
  * Defines the scope API for an interceptor reply
@@ -70392,7 +70392,7 @@ const {
   kOrigin,
   kGetNetConnect
 } = __nccwpck_require__(6142)
-const { buildURL, nop } = __nccwpck_require__(8515)
+const { buildURL, nop } = __nccwpck_require__(896)
 const { STATUS_CODES } = __nccwpck_require__(8611)
 const {
   types: {
@@ -71207,7 +71207,7 @@ const Client = __nccwpck_require__(4148)
 const {
   InvalidArgumentError
 } = __nccwpck_require__(644)
-const util = __nccwpck_require__(8515)
+const util = __nccwpck_require__(896)
 const { kUrl, kInterceptors } = __nccwpck_require__(8974)
 const buildConnector = __nccwpck_require__(7657)
 
@@ -71973,7 +71973,7 @@ module.exports = {
 
 
 const { webidl } = __nccwpck_require__(5631)
-const { kEnumerableProperty } = __nccwpck_require__(8515)
+const { kEnumerableProperty } = __nccwpck_require__(896)
 const { MessagePort } = __nccwpck_require__(548)
 
 /**
@@ -72962,7 +72962,7 @@ const { isEstablished, isClosing, isValidSubprotocol, failWebsocketConnection, f
 const { establishWebSocketConnection } = __nccwpck_require__(367)
 const { WebsocketFrameSend } = __nccwpck_require__(3854)
 const { ByteParser } = __nccwpck_require__(4942)
-const { kEnumerableProperty, isBlobLike } = __nccwpck_require__(8515)
+const { kEnumerableProperty, isBlobLike } = __nccwpck_require__(896)
 const { getGlobalDispatcher } = __nccwpck_require__(812)
 const { types } = __nccwpck_require__(9023)
 
@@ -74272,11 +74272,12 @@ exports["default"] = _default;
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
+__nccwpck_require__.r(__webpack_exports__);
 /* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
-/* harmony export */   fH: () => (/* binding */ logInfo),
-/* harmony export */   vV: () => (/* binding */ logError)
+/* harmony export */   logError: () => (/* binding */ logError),
+/* harmony export */   logInfo: () => (/* binding */ logInfo),
+/* harmony export */   removeSensitiveInfo: () => (/* binding */ removeSensitiveInfo)
 /* harmony export */ });
-/* unused harmony export removeSensitiveInfo */
 const core = __nccwpck_require__(8167);
 
 /**
@@ -74327,38 +74328,39 @@ const iamClient = new _aws_sdk_client_iam__WEBPACK_IMPORTED_MODULE_1__.IAMClient
 
 async function putRolePolicy(roleName, policyName, permissionsPolicy) {
     try {
-        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Attaching inline policy "${policyName}" to role "${roleName}"...`);
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Attaching inline policy "${policyName}" to role "${roleName}"...`);
         const command = new _aws_sdk_client_iam__WEBPACK_IMPORTED_MODULE_1__.PutRolePolicyCommand({
             RoleName: roleName,
             PolicyName: policyName,
             PolicyDocument: JSON.stringify(permissionsPolicy),
         });
         await iamClient.send(command);
-        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Attached policy "${policyName}" to role "${roleName}"`);
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Attached policy "${policyName}" to role "${roleName}"`);
     } catch (error) {
-        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logError */ .vV)('Unable to PutRolePolicy', error);
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logError)('Unable to PutRolePolicy', error);
         throw error;
     }
 }
 
 async function deleteRolePolicy(roleName, policyName) {
     try {
-        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Detaching inline policy "${policyName}" from role "${roleName}"...`);
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Detaching inline policy "${policyName}" from role "${roleName}"...`);
         const command = new _aws_sdk_client_iam__WEBPACK_IMPORTED_MODULE_1__.DeleteRolePolicyCommand({
             RoleName: roleName,
             PolicyName: policyName,
         });
         await iamClient.send(command);
-        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Detached policy "${policyName}" from role "${roleName}"`);
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Detached policy "${policyName}" from role "${roleName}"`);
     } catch (error) {
         if (error.name !== 'NoSuchEntityException') {
-            (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logError */ .vV)('Unable to DeleteRolePolicy', error);
+            (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logError)('Unable to DeleteRolePolicy', error);
             throw error;
         }
 
-        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`✅ Inline policy "${policyName}" not found on role "${roleName}"`);
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`✅ Inline policy "${policyName}" not found on role "${roleName}"`);
     }
 }
+
 
 /***/ }),
 
@@ -74379,67 +74381,117 @@ __nccwpck_require__.r(__webpack_exports__);
 
 const iamClient = new _aws_sdk_client_iam__WEBPACK_IMPORTED_MODULE_1__.IAMClient();
 
+const assumePolicy = {
+    Version: "2012-10-17",
+    Statement: [
+        {
+            Effect: "Allow",
+            Principal: {
+                Service: "credentials.iot.amazonaws.com"
+            },
+            Action: "sts:AssumeRole"
+        }
+    ]
+};
+
+/**
+ * Contains the ARNs of the resources created or used.
+ * @typedef {Object} CreateRoleResult
+ * @property {string} iamRoleArn - ARN of the IAM role.
+ */
+
+
+/**
+ * If the function executes successfully, there will be an IAM role with the IoT credentials
+ * assume policy in the account. The role may already exist, and permissions might not be set
+ * correctly. This will attempt to overwrite the assume policy if the role already exists but with
+ * the wrong permissions.
+ * @param roleName the name of the IAM role to create or verify exists.
+ * @returns {Promise<CreateRoleResult>}
+ */
 async function createRole(roleName) {
-    (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Using region ${await iamClient.config.region()}`);
-    (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Checking if IAM role exists: ${roleName}`);
+    (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Using region ${await iamClient.config.region()}`);
+    (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Checking if IAM role exists: ${roleName}`);
 
+    let getRoleResponse = null;
     try {
-        const getRoleCommand = new _aws_sdk_client_iam__WEBPACK_IMPORTED_MODULE_1__.GetRoleCommand({ RoleName: roleName });
-        const response = await iamClient.send(getRoleCommand);
+        const getRoleCommand = new _aws_sdk_client_iam__WEBPACK_IMPORTED_MODULE_1__.GetRoleCommand({RoleName: roleName});
+        getRoleResponse = await iamClient.send(getRoleCommand);
 
-        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`IAM role "${roleName}" already exists. ARN: ${response.Role.Arn}`);
-        return response.Role.Arn;
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`IAM role "${roleName}" already exists. ARN: ${getRoleResponse.Role.Arn}`);
     } catch (error) {
         if (error.name !== 'NoSuchEntityException') {
-            (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logError */ .vV)('Unable to GetRole', error);
+            (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logError)('Unable to GetRole', error);
             throw error;
         }
 
-        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`IAM role "${roleName}" not found. Creating it...`);
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`IAM role "${roleName}" not found. Creating it...`);
     }
 
-    const assumePolicy = {
-        Version: "2012-10-17",
-        Statement: [
-            {
-                Effect: "Allow",
-                Principal: {
-                    Service: "credentials.iot.amazonaws.com"
-                },
-                Action: "sts:AssumeRole"
-            }
-        ]
-    };
+    // Role exists, validate the permissions
+    if (getRoleResponse) {
+        const currentPolicy = JSON.parse(decodeURIComponent(getRoleRespnse.Role.AssumeRolePolicyDocument));
 
+        const requiredStatement = assumePolicy.Statement[0];
+        const hasRequiredStatement = currentPolicy.Statement.some((stmt) =>
+            stmt.Effect === requiredStatement.Effect &&
+            JSON.stringify(stmt.Principal) === JSON.stringify(requiredStatement.Principal) &&
+            stmt.Action === requiredStatement.Action
+        );
+
+        if (hasRequiredStatement) {
+            (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`✅ "${roleName}"'s trust policy already has IoT assume role permissions.`);
+            return { iamRoleArn: getRoleResponse.Role.Arn };
+        }
+
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Updating trust policy for role "${roleName}"`);
+        const updateCommand = new _aws_sdk_client_iam__WEBPACK_IMPORTED_MODULE_1__.UpdateAssumeRolePolicyCommand({
+            RoleName: roleName,
+            PolicyDocument: JSON.stringify(assumePolicy)
+        });
+
+        try {
+            await iamClient.send(updateCommand);
+        } catch (error) {
+            (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logError)('Unable to UpdateAssumeRolePolicyCommand to add IoT assume role permissions!');
+            throw error;
+        }
+
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Updated trust policy for role "${roleName}"`);
+        return { iamRoleArn: getRoleResponse.Role.Arn };
+    }
+
+    // Role doesn't exist, create it
     try {
         const createCommand = new _aws_sdk_client_iam__WEBPACK_IMPORTED_MODULE_1__.CreateRoleCommand({
             RoleName: roleName,
             AssumeRolePolicyDocument: JSON.stringify(assumePolicy),
         });
 
-        const response = await iamClient.send(createCommand);
+        getRoleResponse = await iamClient.send(createCommand);
 
-        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Created IAM role: ${response.Role.Arn}`);
-        return response.Role.Arn;
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Created IAM role: ${getRoleResponse.Role.Arn}`);
     } catch (error) {
-        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logError */ .vV)('Unable to CreateRole', error);
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logError)('Unable to CreateRole', error);
         throw error;
     }
+
+    return { iamRoleArn: getRoleResponse.Role.Arn };
 }
 
 async function deleteRole(roleName) {
     try {
-        const deleteCommand = new _aws_sdk_client_iam__WEBPACK_IMPORTED_MODULE_1__.DeleteRoleCommand({ RoleName: roleName });
+        const deleteCommand = new _aws_sdk_client_iam__WEBPACK_IMPORTED_MODULE_1__.DeleteRoleCommand({RoleName: roleName});
         await iamClient.send(deleteCommand);
 
-        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Deleted IAM role: ${roleName}`);
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Deleted IAM role: ${roleName}`);
     } catch (error) {
         if (error.name !== 'NoSuchEntityException') {
-            (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logError */ .vV)('Unable to GetRole', error);
+            (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logError)('Unable to GetRole', error);
             throw error;
         }
 
-        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`✅ Role doesn't exist: ${roleName}`)
+        (0,_helpers_js__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`✅ Role doesn't exist: ${roleName}`)
     }
 }
 
@@ -74463,6 +74515,8 @@ function getInputs() {
     const iamRoleName = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('iam-role-name');
     const iamPolicyName = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('iam-policy-name');
     const permissionsPolicyRaw = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('iam-policy-string');
+    const roleAliasName = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("iot-role-alias");
+    const credentialDurationSecondsRaw = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("credential-duration-seconds");
 
     if (!iotThingName.length) {
         throw `Required parameter not supplied: thing-name`;
@@ -74480,6 +74534,20 @@ function getInputs() {
         throw new Error(`Required parameter not supplied: iam-policy-string`);
     }
 
+    if (!roleAliasName.length) {
+        throw new Error(`Required parameter not supplied: iot-role-alias`);
+    }
+
+    if (typeof credentialDurationSecondsRaw !== 'string' || !/^\d+$/.test(credentialDurationSecondsRaw)) {
+        throw new Error(`credential-duration-seconds must be an integer`);
+    }
+
+    const credentialDurationSeconds = parseInt(credentialDurationSecondsRaw, 10);
+
+    if (credentialDurationSeconds < 900 || credentialDurationSeconds > 43200) {
+        throw new Error(`credential-duration-seconds must be between 900 and 43,200`);
+    }
+
     let permissionsPolicy;
     try {
         permissionsPolicy = JSON.parse(permissionsPolicyRaw);
@@ -74491,7 +74559,65 @@ function getInputs() {
         throw new Error(`permissions-policy must be a valid JSON object`);
     }
 
-    return {iotThingName, iamRoleName, iamPolicyName, permissionsPolicy};
+    return {iotThingName, iamRoleName, iamPolicyName, permissionsPolicy, roleAliasName, credentialDurationSeconds};
+}
+
+
+/***/ }),
+
+/***/ 1870:
+/***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
+
+"use strict";
+__nccwpck_require__.r(__webpack_exports__);
+/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
+/* harmony export */   createRoleAlias: () => (/* binding */ createRoleAlias),
+/* harmony export */   deleteRoleAlias: () => (/* binding */ deleteRoleAlias)
+/* harmony export */ });
+/* harmony import */ var _aws_sdk_client_iot__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(192);
+/* harmony import */ var _aws_sdk_client_iot__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_aws_sdk_client_iot__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(6255);
+
+
+
+const iotClient = new _aws_sdk_client_iot__WEBPACK_IMPORTED_MODULE_1__.IoTClient();
+
+async function createRoleAlias(roleAlias, roleArn, credentialDurationSeconds) {
+    try {
+        (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Creating role alias "${roleAlias}" with role ARN: ${roleArn}`);
+
+        const command = new _aws_sdk_client_iot__WEBPACK_IMPORTED_MODULE_1__.CreateRoleAliasCommand({
+            roleAlias,
+            roleArn,
+            credentialDurationSeconds: credentialDurationSeconds,
+        });
+
+        const response = await iotClient.send(command);
+        const aliasArn = response.roleAliasArn;
+
+        (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Created role alias ARN: ${aliasArn}`);
+
+        return aliasArn;
+    } catch (error) {
+        (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.logError)("Failed to create role alias", error);
+        throw error;
+    }
+}
+
+async function deleteRoleAlias(roleAlias) {
+    try {
+        const command = new _aws_sdk_client_iot__WEBPACK_IMPORTED_MODULE_1__.DeleteRoleAliasCommand({ roleAlias });
+        await iotClient.send(command);
+
+        (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`✅ Deleted role alias: ${roleAlias}`);
+    } catch (error) {
+        if (error.name !== "ResourceNotFoundException") {
+            (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.logError)("Failed to delete role alias", error);
+            throw error;
+        }
+
+        (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`✅ Role alias "${roleAlias}" already deleted`);
+    }
 }
 
 
@@ -74515,27 +74641,27 @@ __nccwpck_require__.r(__webpack_exports__);
 const iotClient = new _aws_sdk_client_iot__WEBPACK_IMPORTED_MODULE_1__.IoTClient();
 
 async function createThing(thingName) {
-    (0,_helpers__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Using region ${await iotClient.config.region()}`);
-    (0,_helpers__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Checking if thing exists: ${thingName}`);
+    (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Using region ${await iotClient.config.region()}`);
+    (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Checking if thing exists: ${thingName}`);
 
     try {
         const describeCommand = new _aws_sdk_client_iot__WEBPACK_IMPORTED_MODULE_1__.DescribeThingCommand({thingName});
         const response = await iotClient.send(describeCommand);
 
-        (0,_helpers__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Thing "${thingName}" already exists. ARN: ${response.thingArn}`);
+        (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Thing "${thingName}" already exists. ARN: ${response.thingArn}`);
         return response.thingArn;
     } catch (error) {
         if (error.name !== 'ResourceNotFoundException') {
-            (0,_helpers__WEBPACK_IMPORTED_MODULE_0__/* .logError */ .vV)('Unable to DescribeThing', error);
+            (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.logError)('Unable to DescribeThing', error);
             throw error;
         }
 
-        (0,_helpers__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Thing "${thingName}" not found. Creating it...`);
+        (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Thing "${thingName}" not found. Creating it...`);
 
         const createThingCommand = new _aws_sdk_client_iot__WEBPACK_IMPORTED_MODULE_1__.CreateThingCommand({thingName});
         const response = await iotClient.send(createThingCommand);
 
-        (0,_helpers__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Created thing: ${response.thingArn}`);
+        (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Created thing: ${response.thingArn}`);
         return response.thingArn;
     }
 }
@@ -74545,14 +74671,14 @@ async function deleteThing(thingName) {
         const deleteThingCommand = new _aws_sdk_client_iot__WEBPACK_IMPORTED_MODULE_1__.DeleteThingCommand({thingName});
         await iotClient.send(deleteThingCommand);
 
-        (0,_helpers__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`Deleted thing: ${thingName}`);
+        (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`Deleted thing: ${thingName}`);
     } catch (error) {
         if (error.name !== 'ResourceNotFoundException') {
-            (0,_helpers__WEBPACK_IMPORTED_MODULE_0__/* .logError */ .vV)('Unable to DeleteThing', error);
+            (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.logError)('Unable to DeleteThing', error);
             throw error;
         }
 
-        (0,_helpers__WEBPACK_IMPORTED_MODULE_0__/* .logInfo */ .fH)(`✅ Thing doesn't exist: ${thingName}`)
+        (0,_helpers__WEBPACK_IMPORTED_MODULE_0__.logInfo)(`✅ Thing doesn't exist: ${thingName}`)
     }
 }
 
@@ -76559,21 +76685,43 @@ module.exports = /*#__PURE__*/JSON.parse('{"name":"@aws-sdk/nested-clients","ver
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-const core = __nccwpck_require__(8167);
 const {deleteRole} = __nccwpck_require__(2630);
 const {deleteThing} = __nccwpck_require__(5349);
 const {getInputs} = __nccwpck_require__(7626);
 const {deleteRolePolicy} = __nccwpck_require__(9168);
+const {deleteRoleAlias} = __nccwpck_require__(1870);
+const {logError} = __nccwpck_require__(6255);
 
 async function main() {
-    const { iotThingName, iamRoleName, iamPolicyName } = getInputs();
+    const {iotThingName, iamRoleName, iamPolicyName, roleAliasName} = getInputs();
 
-    await deleteRolePolicy(iamRoleName, iamPolicyName);
-    await deleteRole(iamRoleName);
-    await deleteThing(iotThingName);
+    try {
+        await deleteRoleAlias(roleAliasName);
+    } catch (e) {
+        logError('Unable to delete role alias', e);
+    }
+
+    try {
+        await deleteRolePolicy(iamRoleName, iamPolicyName);
+    } catch (e) {
+        logError('Unable to delete role policy', e);
+    }
+
+    try {
+        await deleteRole(iamRoleName);
+    } catch (e) {
+        logError('Unable to delete iam role', e);
+    }
+
+    try {
+        await deleteThing(iotThingName);
+    } catch (e) {
+        logError('Unable to delete delete thing', e);
+    }
 }
 
 main();
+
 module.exports = __webpack_exports__;
 /******/ })()
 ;

@@ -76319,16 +76319,44 @@ var client_iam_dist_cjs = __nccwpck_require__(9235);
 
 const iamClient = new client_iam_dist_cjs.IAMClient();
 
+const assumePolicy = {
+    Version: "2012-10-17",
+    Statement: [
+        {
+            Effect: "Allow",
+            Principal: {
+                Service: "credentials.iot.amazonaws.com"
+            },
+            Action: "sts:AssumeRole"
+        }
+    ]
+};
+
+/**
+ * Contains the ARNs of the resources created or used.
+ * @typedef {Object} CreateRoleResult
+ * @property {string} iamRoleArn - ARN of the IAM role.
+ */
+
+
+/**
+ * If the function executes successfully, there will be an IAM role with the IoT credentials
+ * assume policy in the account. The role may already exist, and permissions might not be set
+ * correctly. This will attempt to overwrite the assume policy if the role already exists but with
+ * the wrong permissions.
+ * @param roleName the name of the IAM role to create or verify exists.
+ * @returns {Promise<CreateRoleResult>}
+ */
 async function createRole(roleName) {
     helpers_logInfo(`Using region ${await iamClient.config.region()}`);
     helpers_logInfo(`Checking if IAM role exists: ${roleName}`);
 
+    let getRoleResponse = null;
     try {
-        const getRoleCommand = new client_iam_dist_cjs.GetRoleCommand({ RoleName: roleName });
-        const response = await iamClient.send(getRoleCommand);
+        const getRoleCommand = new client_iam_dist_cjs.GetRoleCommand({RoleName: roleName});
+        getRoleResponse = await iamClient.send(getRoleCommand);
 
-        helpers_logInfo(`IAM role "${roleName}" already exists. ARN: ${response.Role.Arn}`);
-        return response.Role.Arn;
+        helpers_logInfo(`IAM role "${roleName}" already exists. ARN: ${getRoleResponse.Role.Arn}`);
     } catch (error) {
         if (error.name !== 'NoSuchEntityException') {
             helpers_logError('Unable to GetRole', error);
@@ -76338,38 +76366,60 @@ async function createRole(roleName) {
         helpers_logInfo(`IAM role "${roleName}" not found. Creating it...`);
     }
 
-    const assumePolicy = {
-        Version: "2012-10-17",
-        Statement: [
-            {
-                Effect: "Allow",
-                Principal: {
-                    Service: "credentials.iot.amazonaws.com"
-                },
-                Action: "sts:AssumeRole"
-            }
-        ]
-    };
+    // Role exists, validate the permissions
+    if (getRoleResponse) {
+        const currentPolicy = JSON.parse(decodeURIComponent(getRoleRespnse.Role.AssumeRolePolicyDocument));
 
+        const requiredStatement = assumePolicy.Statement[0];
+        const hasRequiredStatement = currentPolicy.Statement.some((stmt) =>
+            stmt.Effect === requiredStatement.Effect &&
+            JSON.stringify(stmt.Principal) === JSON.stringify(requiredStatement.Principal) &&
+            stmt.Action === requiredStatement.Action
+        );
+
+        if (hasRequiredStatement) {
+            helpers_logInfo(`✅ "${roleName}"'s trust policy already has IoT assume role permissions.`);
+            return { iamRoleArn: getRoleResponse.Role.Arn };
+        }
+
+        helpers_logInfo(`Updating trust policy for role "${roleName}"`);
+        const updateCommand = new client_iam_dist_cjs.UpdateAssumeRolePolicyCommand({
+            RoleName: roleName,
+            PolicyDocument: JSON.stringify(assumePolicy)
+        });
+
+        try {
+            await iamClient.send(updateCommand);
+        } catch (error) {
+            helpers_logError('Unable to UpdateAssumeRolePolicyCommand to add IoT assume role permissions!');
+            throw error;
+        }
+
+        helpers_logInfo(`Updated trust policy for role "${roleName}"`);
+        return { iamRoleArn: getRoleResponse.Role.Arn };
+    }
+
+    // Role doesn't exist, create it
     try {
         const createCommand = new client_iam_dist_cjs.CreateRoleCommand({
             RoleName: roleName,
             AssumeRolePolicyDocument: JSON.stringify(assumePolicy),
         });
 
-        const response = await iamClient.send(createCommand);
+        getRoleResponse = await iamClient.send(createCommand);
 
-        helpers_logInfo(`Created IAM role: ${response.Role.Arn}`);
-        return response.Role.Arn;
+        helpers_logInfo(`Created IAM role: ${getRoleResponse.Role.Arn}`);
     } catch (error) {
         helpers_logError('Unable to CreateRole', error);
         throw error;
     }
+
+    return { iamRoleArn: getRoleResponse.Role.Arn };
 }
 
 async function deleteRole(roleName) {
     try {
-        const deleteCommand = new DeleteRoleCommand({ RoleName: roleName });
+        const deleteCommand = new DeleteRoleCommand({RoleName: roleName});
         await iamClient.send(deleteCommand);
 
         logInfo(`Deleted IAM role: ${roleName}`);
@@ -76393,6 +76443,8 @@ function getInputs() {
     const iamRoleName = (0,lib_core.getInput)('iam-role-name');
     const iamPolicyName = (0,lib_core.getInput)('iam-policy-name');
     const permissionsPolicyRaw = (0,lib_core.getInput)('iam-policy-string');
+    const roleAliasName = (0,lib_core.getInput)("iot-role-alias");
+    const credentialDurationSecondsRaw = (0,lib_core.getInput)("credential-duration-seconds");
 
     if (!iotThingName.length) {
         throw `Required parameter not supplied: thing-name`;
@@ -76410,6 +76462,20 @@ function getInputs() {
         throw new Error(`Required parameter not supplied: iam-policy-string`);
     }
 
+    if (!roleAliasName.length) {
+        throw new Error(`Required parameter not supplied: iot-role-alias`);
+    }
+
+    if (typeof credentialDurationSecondsRaw !== 'string' || !/^\d+$/.test(credentialDurationSecondsRaw)) {
+        throw new Error(`credential-duration-seconds must be an integer`);
+    }
+
+    const credentialDurationSeconds = parseInt(credentialDurationSecondsRaw, 10);
+
+    if (credentialDurationSeconds < 900 || credentialDurationSeconds > 43200) {
+        throw new Error(`credential-duration-seconds must be between 900 and 43,200`);
+    }
+
     let permissionsPolicy;
     try {
         permissionsPolicy = JSON.parse(permissionsPolicyRaw);
@@ -76421,7 +76487,7 @@ function getInputs() {
         throw new Error(`permissions-policy must be a valid JSON object`);
     }
 
-    return {iotThingName, iamRoleName, iamPolicyName, permissionsPolicy};
+    return {iotThingName, iamRoleName, iamPolicyName, permissionsPolicy, roleAliasName, credentialDurationSeconds};
 }
 
 ;// CONCATENATED MODULE: ./src/iam/policy.js
@@ -76464,18 +76530,65 @@ async function deleteRolePolicy(roleName, policyName) {
         logInfo(`✅ Inline policy "${policyName}" not found on role "${roleName}"`);
     }
 }
+
+;// CONCATENATED MODULE: ./src/iot/roleAlias.js
+
+
+
+const roleAlias_iotClient = new dist_cjs.IoTClient();
+
+async function createRoleAlias(roleAlias, roleArn, credentialDurationSeconds) {
+    try {
+        helpers_logInfo(`Creating role alias "${roleAlias}" with role ARN: ${roleArn}`);
+
+        const command = new dist_cjs.CreateRoleAliasCommand({
+            roleAlias,
+            roleArn,
+            credentialDurationSeconds: credentialDurationSeconds,
+        });
+
+        const response = await roleAlias_iotClient.send(command);
+        const aliasArn = response.roleAliasArn;
+
+        helpers_logInfo(`Created role alias ARN: ${aliasArn}`);
+
+        return aliasArn;
+    } catch (error) {
+        helpers_logError("Failed to create role alias", error);
+        throw error;
+    }
+}
+
+async function deleteRoleAlias(roleAlias) {
+    try {
+        const command = new DeleteRoleAliasCommand({ roleAlias });
+        await roleAlias_iotClient.send(command);
+
+        logInfo(`✅ Deleted role alias: ${roleAlias}`);
+    } catch (error) {
+        if (error.name !== "ResourceNotFoundException") {
+            logError("Failed to delete role alias", error);
+            throw error;
+        }
+
+        logInfo(`✅ Role alias "${roleAlias}" already deleted`);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/index.js
 
 
 
 
 
+
 async function main() {
-    const { iotThingName, iamRoleName, iamPolicyName, permissionsPolicy } = getInputs();
+    const { iotThingName, iamRoleName, iamPolicyName, permissionsPolicy, roleAliasName, credentialDurationSeconds} = getInputs();
 
     await createThing(iotThingName);
-    await createRole(iamRoleName);
+    const { iamRoleArn } = await createRole(iamRoleName);
     await putRolePolicy(iamRoleName, iamPolicyName, permissionsPolicy);
+    await createRoleAlias(roleAliasName, iamRoleArn, credentialDurationSeconds)
 }
 
 main();
